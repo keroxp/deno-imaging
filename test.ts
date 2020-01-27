@@ -11,7 +11,7 @@ test("read", async () => {
   const image = await readImage("./fixtures/black_150x100.jpg");
   for (let y = 0; y < image.height; y++) {
     for (let x = 0; x < image.width; x++) {
-      const i = y * x * 4 + x * 4;
+      const i = y * image.width * 4 + x * 4;
       assertEquals(image[i], 0);
       assertEquals(image[i + 1], 0);
       assertEquals(image[i + 2], 0);
