@@ -1,4 +1,4 @@
-import * as path from "../vendor/https/deno.land/std/path/mod.ts";
+import * as path from "./vendor/https/deno.land/std/path/mod.ts";
 const filenameBase = "deno_imaging";
 let filenameSuffix = ".so";
 let filenamePrefix = "lib";
@@ -11,7 +11,7 @@ if (Deno.build.os === "mac") {
   filenameSuffix = ".dylib";
 }
 
-const filename = `../target/debug/${filenamePrefix}${filenameBase}${filenameSuffix}`;
+const filename = `./target/debug/${filenamePrefix}${filenameBase}${filenameSuffix}`;
 const pluginPath = new URL(filename, import.meta.url).pathname;
 const plugin = Deno.openPlugin(pluginPath);
 
