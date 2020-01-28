@@ -11,7 +11,7 @@ use serde::Deserialize;
 use std::str;
 
 fn init(context: &mut dyn PluginInitContext) {
-    context.register_op("getMetadata", Box::new(op_get_metadata));
+    context.register_op("getDimensions", Box::new(op_get_dimensions));
     context.register_op("readImage", Box::new(op_read_image));
     context.register_op("saveImage", Box::new(op_save_image));
 }
@@ -30,16 +30,15 @@ fn write_u32(v: u32, dest: &mut [u8], offs: usize) {
  * - width: u32
  * - height: u32
  */
-fn op_get_metadata(arg: &[u8], zero_copy: Option<deno::PinnedBuf>) -> deno::CoreOp {
+fn op_get_dimensions(arg: &[u8], zero_copy: Option<deno::PinnedBuf>) -> deno::CoreOp {
     let filepath = std::str::from_utf8(&arg[..]).unwrap().to_string();
     let fut = async move {
-        match image::open(filepath) {
-            Ok(v) => {
-                let img = v.to_rgba();
+        match image::image_dimensions(filepath) {
+            Ok((w, h)) => {
                 let mut zc = zero_copy.unwrap();
                 let mut_buf = zc.as_mut();
-                write_u32(img.width(), mut_buf, 0);
-                write_u32(img.height(), mut_buf, 4);
+                write_u32(w, mut_buf, 0);
+                write_u32(h, mut_buf, 4);
                 Ok(box_ok())
             }
             Err(_) => Err(()),
