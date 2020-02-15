@@ -1,6 +1,6 @@
-import { test, runIfMain } from "./vendor/https/deno.land/std/testing/mod.ts";
 import { assertEquals } from "./vendor/https/deno.land/std/testing/asserts.ts";
 import { getDimensions, readImage, saveImage } from "./lib.ts";
+const { test } = Deno;
 
 test("getMetadata1", async () => {
   const size = await getDimensions("./fixtures/deno_150x100.jpg");
@@ -36,4 +36,3 @@ test("read/flip/save", async () => {
   }
   await saveImage("./tmp/dest.png", image);
 });
-runIfMain(import.meta);
